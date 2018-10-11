@@ -1,5 +1,5 @@
 <?php
-    $input = json_decode(file_get_contents("../json/create-blog-request.json"), true);
+    $input = json_decode(file_get_contents("../json/create-post-request.json"), true);
     var_dump($input);
     try{
         /*session_start();
@@ -19,11 +19,11 @@
     $date = $input["date"];
     $text = $input["text"];
 
-    $sql = "SELECT uid FROM participation WHERE uid = $uid AND bid = $bloggid";
-    $result = $connection->query($sql);
-    if($result->num_rows == 1){
-        $sql = "INSERT INTO post(title, date, text, bid) VALUES (?,?,?,?)"; 
-        if(connection->insert($sql, [$title] [$date] [$text] [$blogid]) === false){
+    $sql = "SELECT uid FROM blogger WHERE uid = ? AND bid = ?";
+    $result = $connection->query($sql,[$userid,$blogid]);
+    if(count($result) == 1){
+        $sql = "INSERT INTO post(title, date, text, bid, uid) VALUES (?,?,?,?,?)"; 
+        if($connection->insert($sql, [$title, $date, $text, $blogid, $userid]) === false){
             throw new Exception("Kunde inte lägga till post");    
         }
     }
